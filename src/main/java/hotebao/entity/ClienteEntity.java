@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Entity
 @Table (name = "cliente")
-public class Cliente {
+public class ClienteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,10 @@ public class Cliente {
     @Setter
     @Column(nullable = false)
     private String nome;
+
+    @Setter
+    @Column(nullable = false, unique = true)
+    private String cpf;
 
     @Setter
     @Column(nullable = false, unique = true)
@@ -31,17 +35,26 @@ public class Cliente {
     @Column(nullable = false)
     private String senha;
 
-    public Cliente(long idcliente, String nome, String email, String telefone, String login, String senha) {
+    public ClienteEntity(long idcliente, String nome, String email, String telefone, String login, String senha) {
         this.idcliente = idcliente;
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.login = login;
         this.senha = senha;
+        this.cpf = cpf;
     }
 
-    public Cliente() {
+    public ClienteEntity() {
 
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public long getIdcliente() {

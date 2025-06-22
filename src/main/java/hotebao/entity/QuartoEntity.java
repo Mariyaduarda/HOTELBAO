@@ -2,9 +2,11 @@ package hotebao.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "quarto")
-public class Quarto {
+public class QuartoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idquarto;
@@ -16,11 +18,11 @@ public class Quarto {
     private String descricao;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private float preco;
+    private BigDecimal preco;
 
     private String imagem;
 
-    public Quarto(int idquarto, String nome, String descricao, float preco, String imagem) {
+    public QuartoEntity(int idquarto, String nome, String descricao, BigDecimal preco, String imagem) {
         this.idquarto = idquarto;
         this.nome = nome;
         this.descricao = descricao;
@@ -28,7 +30,7 @@ public class Quarto {
         this.imagem = imagem;
     }
 
-    public Quarto() {
+    public QuartoEntity() {
 
     }
 
@@ -56,11 +58,11 @@ public class Quarto {
         this.descricao = descricao;
     }
 
-    public float getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(float preco) {
+    public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
 

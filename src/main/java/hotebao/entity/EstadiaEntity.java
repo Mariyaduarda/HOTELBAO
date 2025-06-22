@@ -7,18 +7,18 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "estadias")
-public class Estadia {
+public class EstadiaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEstadia;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_codigo", nullable = false)
-    private Cliente clienteRelacionamento;
+    private ClienteEntity clienteEntityRelacionamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quarto_codigo", nullable = false)
-    private Quarto quartoRelacionamento;
+    private QuartoEntity quartoEntityRelacionamento;
 
     @Column(nullable = false)
     private LocalDate dataEntrada;
@@ -29,16 +29,16 @@ public class Estadia {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valorTotal;
 
-    public Estadia(int idEstadia, Cliente clienteRelacionamento, Quarto quartoRelacionamento, LocalDate dataEntrada, LocalDate dataSaida, BigDecimal valorTotal) {
+    public EstadiaEntity(int idEstadia, ClienteEntity clienteEntityRelacionamento, QuartoEntity quartoEntityRelacionamento, LocalDate dataEntrada, LocalDate dataSaida, BigDecimal valorTotal) {
         this.idEstadia = idEstadia;
-        this.clienteRelacionamento = clienteRelacionamento;
-        this.quartoRelacionamento = quartoRelacionamento;
+        this.clienteEntityRelacionamento = clienteEntityRelacionamento;
+        this.quartoEntityRelacionamento = quartoEntityRelacionamento;
         this.dataEntrada = dataEntrada;
         this.dataSaida = dataSaida;
         this.valorTotal = valorTotal;
     }
 
-    public Estadia() {
+    public EstadiaEntity() {
 
     }
 
@@ -50,20 +50,20 @@ public class Estadia {
         this.idEstadia = idEstadia;
     }
 
-    public Cliente getClienteRelacionamento() {
-        return clienteRelacionamento;
+    public ClienteEntity getClienteRelacionamento() {
+        return clienteEntityRelacionamento;
     }
 
-    public void setClienteRelacionamento(Cliente clienteRelacionamento) {
-        this.clienteRelacionamento = clienteRelacionamento;
+    public void setClienteRelacionamento(ClienteEntity clienteEntityRelacionamento) {
+        this.clienteEntityRelacionamento = clienteEntityRelacionamento;
     }
 
-    public Quarto getQuartoRelacionamento() {
-        return quartoRelacionamento;
+    public QuartoEntity getQuartoRelacionamento() {
+        return quartoEntityRelacionamento;
     }
 
-    public void setQuartoRelacionamento(Quarto quartoRelacionamento) {
-        this.quartoRelacionamento = quartoRelacionamento;
+    public void setQuartoRelacionamento(QuartoEntity quartoEntityRelacionamento) {
+        this.quartoEntityRelacionamento = quartoEntityRelacionamento;
     }
 
     public LocalDate getDataEntrada() {

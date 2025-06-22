@@ -1,10 +1,11 @@
 package hotebao.entity;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,22 +18,55 @@ public class Usuario {
     @Column(nullable = false)
     private PerfilUsuario perfil;
 
+    @Setter
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String senha;
 
+    @Column(nullable = false, unique = true)
+    private String cpf;
+
     @OneToOne
     @JoinColumn(name = "cliente_codigo")
-    private Cliente cliente;
+    private ClienteEntity clienteEntity;
 
-    public Usuario() {
+    public UsuarioEntity() {
     }
 
-    public Usuario(long idUser, String loginUser, PerfilUsuario perfil, String senha, Cliente cliente) {
+    public UsuarioEntity(long idUser, String loginUser, PerfilUsuario perfil, String senha, ClienteEntity clienteEntity) {
         this.idUser = idUser;
         this.loginUser = loginUser;
         this.perfil = perfil;
+        this.email = email;
         this.senha = senha;
-        this.cliente = cliente;
+        this.cpf = cpf;
+        this.clienteEntity = clienteEntity;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public ClienteEntity getClienteEntity() {
+        return clienteEntity;
+    }
+
+    public void setClienteEntity(ClienteEntity clienteEntity) {
+        this.clienteEntity = clienteEntity;
     }
 
     public long getIdUser() {
@@ -67,12 +101,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public ClienteEntity getCliente() {
+        return clienteEntity;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setCliente(ClienteEntity clienteEntity) {
+        this.clienteEntity = clienteEntity;
     }
 
     public enum PerfilUsuario {
