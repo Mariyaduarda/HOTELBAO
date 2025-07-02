@@ -4,6 +4,37 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Arquivos de configuração com senhas
+application.properties
+application-*.properties
+
+# Arquivos de ambiente
+.env
+*.env
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Build
+target/
+build/
+*.jar
+*.war
+
+# Logs
+*.log
+logs/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
 ### STS ###
 .apt_generated
 .classpath

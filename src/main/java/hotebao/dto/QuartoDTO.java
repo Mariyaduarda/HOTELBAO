@@ -1,6 +1,5 @@
 package hotebao.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -9,14 +8,14 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UsuarioDTO {
+public class QuartoDTO {
 
-    private int id;
+    private Long id;
     private String nome;
-    private String email;
-    private String senha;
-    private String telefone;
-    private String cpf;
-    private String role;
+    private String descricao;
+    private int preco;
+    private int imagem;
+
+    // conectando a estadias
     private List<EstadiaDTO> estadia = new ArrayList<>();
 }

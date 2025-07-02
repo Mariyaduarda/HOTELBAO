@@ -1,8 +1,14 @@
 package hotebao.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 @Entity
 @Table(name = "usuario")
 public class UsuarioEntity {
@@ -14,19 +20,28 @@ public class UsuarioEntity {
     @Column(nullable = false, unique = true)
     private String loginUser;
 
+    // enum para admin ou user
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PerfilUsuario perfil;
 
+    //anotação not blank para campos obrigatórios
+    @NotBlank(message = "Email é campo obrigatório")
     @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "Senha é campo obrigatório")
     @Column(nullable = false)
     private String senha;
 
+    @NotBlank(message = "CPF é campo obrigatório")
     @Column(nullable = false, unique = true)
     private String cpf;
+
+    //linkando usuario a aestadia
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<EstadiaEntity> estadias = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "cliente_codigo")
@@ -35,83 +50,11 @@ public class UsuarioEntity {
     public UsuarioEntity() {
     }
 
-    public UsuarioEntity(long idUser, String loginUser, PerfilUsuario perfil, String senha, ClienteEntity clienteEntity) {
-        this.idUser = idUser;
-        this.loginUser = loginUser;
-        this.perfil = perfil;
-        this.email = email;
-        this.senha = senha;
-        this.cpf = cpf;
-        this.clienteEntity = clienteEntity;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public ClienteEntity getClienteEntity() {
-        return clienteEntity;
-    }
-
-    public void setClienteEntity(ClienteEntity clienteEntity) {
-        this.clienteEntity = clienteEntity;
-    }
-
-    public long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getLoginUser() {
-        return loginUser;
-    }
-
-    public void setLoginUser(String loginUser) {
-        this.loginUser = loginUser;
-    }
-
-    public PerfilUsuario getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(PerfilUsuario perfil) {
-        this.perfil = perfil;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public ClienteEntity getCliente() {
-        return clienteEntity;
-    }
-
-    public void setCliente(ClienteEntity clienteEntity) {
-        this.clienteEntity = clienteEntity;
-    }
 
     public enum PerfilUsuario {
         NAO_AUTENTICADO,
         CLIENTE,
         ADMIN
     }
+
 }

@@ -1,8 +1,14 @@
 package hotebao.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+@Data
 @Entity
 @Table (name = "cliente")
 public class ClienteEntity {
@@ -15,10 +21,12 @@ public class ClienteEntity {
     @Column(nullable = false)
     private String nome;
 
+    @NotBlank(message = "CPF é campo obrigatório")
     @Setter
     @Column(nullable = false, unique = true)
     private String cpf;
 
+    @NotBlank(message = "Email é campo obrigatório")
     @Setter
     @Column(nullable = false, unique = true)
     private String email;
@@ -31,9 +39,16 @@ public class ClienteEntity {
     @Column(nullable = false, unique = true)
     private String login;
 
+    @NotBlank(message = "Senha é campo obrigatório")
     @Setter
     @Column(nullable = false)
     private String senha;
+
+    @OneToMany(mappedBy = "clienteCodigo")
+    private Set<EstadiaEntity> estadias = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "clienteEntity")
+    private UsuarioEntity usuario;
 
     public ClienteEntity(long idcliente, String nome, String email, String telefone, String login, String senha) {
         this.idcliente = idcliente;
@@ -107,5 +122,18 @@ public class ClienteEntity {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    @Override
+    public String toString() {
+        return "ClienteEntity{" +
+                "idcliente=" + idcliente +
+                ", nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", email='" + email + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", login='" + login + '\'' +
+                ", senha='" + senha + '\'' +
+                '}';
     }
 }
