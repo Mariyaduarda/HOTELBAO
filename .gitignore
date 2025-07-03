@@ -7,8 +7,10 @@ target/
 # Arquivos de configuração com senhas
 application.properties
 application-*.properties
+data.sql
 
 # Arquivos de ambiente
+jwt.env
 .env
 *.env
 

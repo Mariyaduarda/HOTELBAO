@@ -37,4 +37,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
     // buscar apenas administradores
     List<UsuarioEntity> findByPerfilOrderByLoginUserAsc(UsuarioEntity.PerfilUsuario perfil);
+
+    String loginUser(String loginUser);
 }

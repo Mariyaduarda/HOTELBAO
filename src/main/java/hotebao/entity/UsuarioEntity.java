@@ -1,9 +1,15 @@
 package hotebao.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Setter;
+import org.aspectj.bridge.IMessage;
+import org.aspectj.bridge.IMessageContext;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,20 +21,23 @@ public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
     private long idUser;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank (message = "Obrigatório inserir username")
+    @Size(min = 5, max = 30, message = "Username deve ter entre 3 a 30 caracteres")
+    @Column(name ="login_user", nullable = false, unique = true, length = 30)
     private String loginUser;
 
     // enum para admin ou user
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PerfilUsuario perfil;
+    @Column(name = "perfil", nullable = false)
+    private PerfilUsuario perfil = PerfilUsuario.CLIENTE;
 
     //anotação not blank para campos obrigatórios
     @NotBlank(message = "Email é campo obrigatório")
-    @Setter
-    @Column(nullable = false, unique = true)
+    @Email(message = "Email deve ter formato válido")
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
     @NotBlank(message = "Senha é campo obrigatório")
@@ -36,7 +45,8 @@ public class UsuarioEntity {
     private String senha;
 
     @NotBlank(message = "CPF é campo obrigatório")
-    @Column(nullable = false, unique = true)
+    @CPF(message = "Por favor, digite CPF de formato válido, sem espaços")
+    @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
 
     //linkando usuario a aestadia

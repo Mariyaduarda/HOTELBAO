@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface EstadiaRepository  extends JpaRepository<EstadiaEntity, Long> {
+public interface EstadiaRepository extends JpaRepository<EstadiaEntity, Long> {
+
+    Optional<EstadiaEntity> findEstadiaEntitiesConfirmationCode(String nome);
     // buscar por quarto - cliente
     List<EstadiaEntity> findByQuartoEntityRelacionamento(QuartoEntity quartoEntityRelacionamento);
 
