@@ -32,7 +32,7 @@ public class UsuarioEntity {
     // enum para admin ou user
     @Enumerated(EnumType.STRING)
     @Column(name = "perfil", nullable = false)
-    private PerfilUsuario perfil = PerfilUsuario.CLIENTE;
+    private PerfilUsuario perfil = PerfilUsuario.USUARIO_ROLE;
 
     //anotação not blank para campos obrigatórios
     @NotBlank(message = "Email é campo obrigatório")
@@ -60,11 +60,10 @@ public class UsuarioEntity {
     public UsuarioEntity() {
     }
 
-
     public enum PerfilUsuario {
         NAO_AUTENTICADO,
-        CLIENTE,
-        ADMIN
+        ADMIN_ROLE,
+        USUARIO_ROLE
     }
 
 }

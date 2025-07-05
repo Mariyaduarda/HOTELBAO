@@ -1,37 +1,48 @@
 package hotebao.service;
 
+import hotebao.exception.OurException;
 import hotebao.repository.UsuarioRepository;
 import hotebao.entity.UsuarioEntity;
+import hotebao.security.JWTUtil;
+import hotebao.service.past.InterfaceUsuarioService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService implements InterfaceUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Override
-    public UserDetails loadUserByUsername(String loginUser) throws UsernameNotFoundException {
-        UsuarioEntity usuario = usuarioRepository.findByEmail(loginUser)
-                .orElseThrow(() -> new UsernameNotFoundException("O nome de usuário não foi encontrado."));
+    public Response registro(UsuarioEntity usuarioEntity){
+        Response response = new Response();
 
-        // Opção 1: Se UsuarioEntity implementa UserDetails
-        return (UserDetails) usuario;
+        try{
+            if (usuarioEntity.getPerfil() == null){
+                usuarioEntity.setPerfil(UsuarioEntity.PerfilUsuario.USUARIO_ROLE));
+            }
+            if (usuarioRepository.existsByEmail(usuarioEntity.getEmail())){
+                throw new OurException(usuarioEntity.getEmail() + " " + "Já existe no sistema");
+            }
 
-        // Opção 2: Se usando CustomUserDetails (descomente a linha abaixo e comente a de cima)
-        // return new CustomUserDetails(usuario);
-    }
+        }catch (OurException e){
 
-    // Método adicional se você quiser buscar usuário por email
-    public UsuarioEntity findByEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com email: " + email));
+        }catch (Exception e){
+
+        }
+        return response;
     }
 }
