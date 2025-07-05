@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface EstadiaRepository extends JpaRepository<EstadiaEntity, Long> {
 
-    Optional<EstadiaEntity> findEstadiaEntitiesConfirmationCode(String nome);
+    Optional<EstadiaEntity> findEstadiaEntityConfirmationCode(String ConfirmationCode);
     // buscar por quarto - cliente
     List<EstadiaEntity> findByQuartoEntityRelacionamento(QuartoEntity quartoEntityRelacionamento);
 

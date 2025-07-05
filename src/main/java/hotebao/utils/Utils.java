@@ -1,6 +1,10 @@
 package hotebao.utils;
 
-import java.security.SecureRandom;
+import hotebao.dto.*;
+import hotebao.entity.*;
+import java.security.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -11,7 +15,7 @@ public class Utils {
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     /**
-     * Gera uma string aleatória alfanumérica com o comprimento especificado
+     * gerar uma string aleatória alfanumérica com o comprimento especificado
      * @param length - comprimento da string a ser gerada
      * @return string aleatória contendo apenas letras maiúsculas e números
      */
@@ -34,4 +38,119 @@ public class Utils {
         // retorna a string gerada
         return stringBuilder.toString();
     }
+
+    /**
+     * mapeia UsuarioEntity para UsuarioDTO
+     * metodo factory
+     */    public static UsuarioDTO mapUsuarioEntityToUsuarioDTO(UsuarioEntity usuarioEntity) {
+        if (usuarioEntity == null) {
+            return null;
+        }
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+
+        usuarioDTO.setIdUser(usuarioEntity.getIdUser());
+        usuarioDTO.setLoginUser(usuarioEntity.getLoginUser());
+        usuarioDTO.setEmail(usuarioEntity.getEmail());
+        usuarioDTO.setSenha(usuarioEntity.getSenha());
+        usuarioDTO.setCpf(usuarioEntity.getCpf());
+        usuarioDTO.setEstadia(new ArrayList<>());
+
+            usuarioDTO.generateSessionToken();
+
+        return usuarioDTO;
+    }
+
+    /**
+     * mapeia QuartoEntity para QuartoDTO
+     */
+    public static QuartoDTO mapQuartoEntityToQuartoDTO(QuartoEntity quartoEntity){
+
+        if (quartoEntity == null) {
+            return null;
+        }
+
+        QuartoDTO quartoDTO = new QuartoDTO();
+
+        quartoDTO.setIdQuarto(quartoEntity.getIdquarto());
+        quartoDTO.setNome(quartoEntity.getNome());
+        quartoDTO.setPreco(quartoEntity.getPreco());
+        quartoDTO.setImagem(quartoEntity.getImagem());
+        quartoDTO.setDescricao(quartoEntity.getDescricao());
+        quartoDTO.setEstadia(new ArrayList<>());
+
+        quartoDTO.generateSessionToken();
+
+        return quartoDTO;
+    }
+
+    /**
+     * mapeia ClienteEntity para ClienteDTO
+     */
+    public static ClienteDTO mapClienteEntityToClienteDTO(ClienteEntity clienteEntity) {
+
+        if (clienteEntity == null) {
+            return null;
+        }
+
+        ClienteDTO clienteDTO = new ClienteDTO();
+
+        clienteDTO.setIdCliente(clienteEntity.getIdCliente());
+        clienteDTO.setNome(clienteEntity.getNome());
+        clienteDTO.setCpf(clienteEntity.getCpf());
+        clienteDTO.setTelefone(clienteEntity.getTelefone());
+        clienteDTO.setEmail(clienteEntity.getEmail());
+
+        clienteDTO.setEstadia(new ArrayList<>());
+
+        // cliente provavelmente não precisa de token de sessão
+        clienteDTO.generateSessionToken();
+
+        return clienteDTO;
+    }
+
+    /**
+     * mapeia EstadiaEntity para EstadiaDTO
+     */
+    public static EstadiaDTO mapEstadiaEntityToEstadiaDTO(EstadiaEntity estadiaEntity) {
+        if (estadiaEntity == null) {
+            return null;
+        }
+
+        EstadiaDTO estadiaDTO = new EstadiaDTO();
+
+        estadiaDTO.setIdEstadia(estadiaEntity.getIdEstadia());
+        estadiaDTO.setDataEntrada(estadiaEntity.getDataEntrada());
+        estadiaDTO.setDataSaida(estadiaEntity.getDataSaida());
+        estadiaDTO.setValorTotal(estadiaEntity.getValorTotal());
+        estadiaDTO.setEstadia(new ArrayList<>());
+
+        // gerar ‘token’ de sessão
+        estadiaDTO.generateSessionToken();
+
+        return estadiaDTO;
+    }
+
+    /*
+     * pega o objeto entity do db e converte para dto, para enviar pela API.
+     * copia dados e os transporta
+     */
+
+    public  static List<UsuarioDTO> mapUsuarioEntityListToUsuarioDTOList(List<UsuarioEntity> usuarioEntityList){
+        return usuarioEntityList.stream().map(u -> mapUsuarioEntityToUsuarioDTO(u)).collect(Collectors.toList());
+    }
+
+    public  static List<QuartoDTO> mapQuartoEntityListToQuartoDTOList(List<QuartoEntity> quartoEntityList){
+        return quartoEntityList.stream().map(u -> mapQuartoEntityToQuartoDTO(u)).collect(Collectors.toList());
+    }
+
+    public  static List<EstadiaDTO> mapEstadiaEntityListToEstadiaDTOList(List<EstadiaEntity> estadiaEntityList){
+        return estadiaEntityList.stream().map(u -> mapEstadiaEntityToEstadiaDTO(u)).collect(Collectors.toList());
+    }
+
+    public  static List<ClienteDTO> mapClienteEntityListToClienteDTOList(List<ClienteEntity> clienteEntityList){
+        return clienteEntityList.stream().map(u -> mapClienteEntityToClienteDTO(u)).collect(Collectors.toList());
+    }
 }
+
+
