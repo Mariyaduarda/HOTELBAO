@@ -7,15 +7,15 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Respoonse {
+public class Response {
 
     private int statusCodigo;
     private String message;
 
     private String token;
-    private String role;
+    private String PerfilUsuario;
     private String tempoExpirado;
-    private String estadiaCodgioConfirma;
+    private String ConfirmationCode;
 
     private UsuarioDTO usuarioDTO;
     private QuartoDTO quartoDTO;
