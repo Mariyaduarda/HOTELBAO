@@ -19,4 +19,6 @@ public interface InterfaceUsuarioService {
     Response getMyInfo(String email);
 
     Response getUsuarioEstadiaHistory(String idUsuario);
+
+    Response getUsuarioEstadiaHistory(String idUsuario, String tipoQuarto);
 }

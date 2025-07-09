@@ -3,6 +3,7 @@ package hotebao.service.obj;
 import hotebao.dto.QuartoDTO;
 import hotebao.dto.Response;
 import hotebao.entity.QuartoEntity;
+import hotebao.entity.QuartoEntity.TipoQuarto;
 import hotebao.exception.OurException;
 import hotebao.repository.EstadiaRepository;
 import hotebao.repository.QuartoRepository;
@@ -34,6 +35,10 @@ public class QuartoService implements InterfaceQuartoService {
     // Configuração do diretório de upload
     @Value("${upload.directory:uploads/}")
     private String uploadDirectory;
+    private TipoQuarto tipoQuarto;
+    private LocalDate dataEntrada;
+    private LocalDate dataSaida;
+
 
     @Override
     public List<String> getQuartosByTipo(QuartoEntity.TipoQuarto quartoTipo) {
@@ -224,7 +229,7 @@ public class QuartoService implements InterfaceQuartoService {
         Response response = new Response();
 
         try {
-            List<QuartoEntity> quartosDisponiveis = quartoRepository.findQuartosDisponiveisByDateAndType(dataEntrada, dataSaida, String.valueOf(tipoQuarto)); // Fixed parameter
+            List<QuartoEntity> quartosDisponiveis = quartoRepository.findQuartosDisponiveisByDateAndType(dataEntrada, dataSaida, String.valueOf(tipoQuarto)); // parametro fixo
             List<QuartoDTO> quartoDTOList = Utils.mapQuartoEntityListToQuartoDTOList(quartosDisponiveis);
 
             response.setMessage("sucesso");
@@ -267,6 +272,6 @@ public class QuartoService implements InterfaceQuartoService {
     }
 
     public List<String> getTipoQuartos() {
-
+        return null;
     }
 }

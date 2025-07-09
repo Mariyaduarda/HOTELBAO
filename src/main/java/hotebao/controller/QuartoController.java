@@ -85,14 +85,15 @@ public class QuartoController {
     ) {
         if (dataEntrada == null || dataSaida == null || tipoQuarto.isBlank()) {
             Response response = new Response();
-            Response.setStatusCode(400);
+            response.setStatusCodigo(400);  // lembrar de usar response em minusculo ein
             response.setMessage("Todos os campos devem ser preenchidos");
+            return ResponseEntity.status(response.getStatusCodigo()).body(response);
         }
 
         Response response = quartoService.getDisponibilidadeGeral(dataEntrada, dataSaida, tipoQuarto);
         return ResponseEntity.status(response.getStatusCodigo()).body(response);
     }
-    @PostMapping("/update/(idQuarto)")
+    @PostMapping("/update/{idQuarto}")
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public ResponseEntity<Response> updateQuarto(
             @PathVariable Long idQuarto,
@@ -105,7 +106,7 @@ public class QuartoController {
         return ResponseEntity.status(response.getStatusCodigo()).body(response);
     }
 
-    @DeleteMapping("/delete/{idQuarto")
+    @DeleteMapping("/delete/{idQuarto}")
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public ResponseEntity<Response> deleteQuarto(@PathVariable Long idQuarto) {
         Response response = quartoService.deleteQuarto(idQuarto);

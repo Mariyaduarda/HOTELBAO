@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioService implements InterfaceUsuarioService {
+public abstract class UsuarioService implements InterfaceUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;

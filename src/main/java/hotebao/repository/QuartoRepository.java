@@ -17,7 +17,7 @@ public interface QuartoRepository extends JpaRepository<QuartoEntity, Long> {
     @Query("SELECT DISTINCT r.TipoQuarto FROM QuartoEntity r")
     List<String> findDistinctQuartoType();
 
-    @Query("SELECT r FROM QuartoEntity r WHERE r.idquarto NOT IN (SELECT b.quartoCodigo FROM EstadiaEntity b)")
+    @Query("SELECT r FROM QuartoEntity r WHERE r.idquarto NOT IN (SELECT b.quarto FROM EstadiaEntity b)")
     List<QuartoEntity> findQuartosDisponiveis();
 
     // buscar quartos por nome
@@ -41,7 +41,7 @@ public interface QuartoRepository extends JpaRepository<QuartoEntity, Long> {
     @Query("SELECT r FROM QuartoEntity r WHERE " +
             "r.tipoQuarto = :tipoQuarto AND " +
             "r.idquarto NOT IN (" +
-            "    SELECT e.QuartoEntity.idquarto FROM EstadiaEntity e " +
+            "    SELECT e.quarto FROM EstadiaEntity e " +
             "    WHERE (e.dataEntrada <= :dataSaida AND e.dataSaida >= :dataEntrada)" +
             ")")
     List<QuartoEntity> findQuartosDisponiveisByDateAndType(
@@ -49,8 +49,7 @@ public interface QuartoRepository extends JpaRepository<QuartoEntity, Long> {
             @Param("dataSaida") LocalDate dataSaida,
             @Param("tipoQuarto") String tipoQuarto);
 
-    @Query("SELECT r FROM QuartoEntity r WHERE r.idquarto NOT IN (SELECT b.quartoCodigo FROM EstadiaEntity b)")
-    List<QuartoEntity> getDisponibilidadeGeral();
-
     List<QuartoEntity> findByTipoQuarto(QuartoEntity.TipoQuarto quartoTipo);
+
+    List<QuartoEntity> getDisponibilidadeGeral();
 }

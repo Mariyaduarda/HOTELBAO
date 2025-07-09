@@ -48,13 +48,4 @@ public class EstadiaEntity {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valorTotal;
 
-    // Construtor customizado (se necessário)
-    public EstadiaEntity(ClienteEntity cliente, QuartoEntity quarto, LocalDate dataEntrada, LocalDate dataSaida, BigDecimal valorTotal) {
-        this.cliente = cliente;
-        this.quarto = quarto;
-        this.dataEntrada = dataEntrada;
-        this.dataSaida = dataSaida;
-        this.valorTotal = valorTotal;
-    }
-
 }
