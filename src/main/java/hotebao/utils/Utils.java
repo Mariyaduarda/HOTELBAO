@@ -50,7 +50,7 @@ public class Utils {
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
 
-        usuarioDTO.setIdUser(usuarioEntity.getIdUser());
+        usuarioDTO.setIdUser(usuarioEntity.getIdUsuario());
         usuarioDTO.setLoginUser(usuarioEntity.getLoginUser());
         usuarioDTO.setEmail(usuarioEntity.getEmail());
         usuarioDTO.setSenha(usuarioEntity.getSenha());

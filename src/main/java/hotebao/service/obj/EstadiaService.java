@@ -12,8 +12,6 @@ import hotebao.repository.UsuarioRepository;
 import hotebao.service.interf.InterfaceEstadiaService;
 import hotebao.service.interf.InterfaceQuartoService;
 import hotebao.utils.Utils;
-import jdk.jshell.execution.Util;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,7 @@ public class EstadiaService implements InterfaceEstadiaService {
     private QuartoRepository quartoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository; // Corrigido: era UsuarioRepository
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public Response SalvaEstadia(Long idQuarto, Long idUsuario, EstadiaEntity estadiaRequest){
@@ -52,8 +50,8 @@ public class EstadiaService implements InterfaceEstadiaService {
 
             List<EstadiaEntity> existingEstadia = quarto.getEstadia();
             //virou um boolean - codigo mais legivel
-            if(!(boolean) quartoIsDisponivel(estadiaRequest, existingEstadia)){
-                throw new OurException("O quarto não está disponivel para a data desejada"); // Corrigido: ponto e vírgula
+            if(!quartoIsDisponivelDetalhado(estadiaRequest, existingEstadia)){
+                throw new OurException("O quarto não está disponivel para a data desejada");
             }
 
             // Configurar a estadia
@@ -65,7 +63,6 @@ public class EstadiaService implements InterfaceEstadiaService {
 
             response.setMessage("Estadia salva com sucesso");
             response.setStatusCodigo(200);
-            // Você pode adicionar um DTO da estadia na response se necessário
 
         } catch (IllegalArgumentException e) {
             response.setStatusCodigo(400);
@@ -78,10 +75,6 @@ public class EstadiaService implements InterfaceEstadiaService {
             response.setMessage("Erro interno: " + e.getMessage());
         }
         return response;
-    }
-
-    private Object quartoIsDisponivel(EstadiaEntity estadiaRequest, List<EstadiaEntity> existingEstadia) {
-        return null;
     }
 
     private boolean quartoIsDisponivelDetalhado(EstadiaEntity estadiaRequest, List<EstadiaEntity> existingEstadias) {
@@ -180,6 +173,79 @@ public class EstadiaService implements InterfaceEstadiaService {
         } catch (Exception e) {
             response.setStatusCodigo(500);
             response.setMessage("Erro interno: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
+    public Response getAllEstadias() {
+        Response response = new Response();
+
+        try {
+            List<EstadiaEntity> estadiaList = estadiaRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+            List<EstadiaDTO> estadiaDTO = Utils.mapEstadiaEntityListToEstadiaDTOList(estadiaList);
+
+            response.setMessage("Todas as estadias obtidas com sucesso");
+            response.setStatusCodigo(200);
+            response.setEstadiaEntityList(estadiaDTO);
+
+        } catch (OurException e) {
+            response.setStatusCodigo(404);
+            response.setMessage(e.getMessage());
+
+        } catch (Exception e) {
+            response.setStatusCodigo(500);
+            response.setMessage("Erro ao buscar todas as estadias: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @Override
+    public Response getEstadiaByConfirmationCode(String confirmationCode) {
+        Response response = new Response();
+
+        try {
+            EstadiaEntity estadia = estadiaRepository.findEstadiaEntityConfirmationCode(confirmationCode)
+                    .orElseThrow(() -> new OurException("Estadia não encontrada com este código de confirmação"));
+
+            EstadiaDTO estadiaDTO = Utils.mapEstadiaEntityToEstadiaDTOPlusEstadiaQuarto(estadia, true);
+
+            response.setMessage("Estadia encontrada com sucesso pelo código de confirmação");
+            response.setStatusCodigo(200);
+            response.setEstadiaDTO(estadiaDTO);
+
+        } catch (OurException e) {
+            response.setStatusCodigo(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCodigo(500);
+            response.setMessage("Erro ao buscar estadia por código de confirmação: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @Override
+    public Response getAllEstadia(Long id) {
+        Response response = new Response();
+
+        try {
+            EstadiaEntity estadia = estadiaRepository.findById(id)
+                    .orElseThrow(() -> new OurException("Estadia não encontrada com ID: " + id));
+
+            EstadiaDTO estadiaDTO = Utils.mapEstadiaEntityToEstadiaDTOPlusEstadiaQuarto(estadia, true);
+
+            response.setMessage("Estadia encontrada com sucesso");
+            response.setStatusCodigo(200);
+            response.setEstadiaDTO(estadiaDTO);
+
+        } catch (OurException e) {
+            response.setStatusCodigo(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCodigo(500);
+            response.setMessage("Erro ao buscar estadia por ID: " + e.getMessage());
         }
 
         return response;

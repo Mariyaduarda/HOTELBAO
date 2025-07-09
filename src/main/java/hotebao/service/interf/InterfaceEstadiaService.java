@@ -12,4 +12,10 @@ public interface InterfaceEstadiaService {
     Response getEstadia();
 
     Response cancelarEstadia(Long idEstadia);
+
+    Response getAllEstadia(Long idEstadia);
+
+    Response getAllEstadias();
+
+    Response getEstadiaByConfirmationCode(String confirmationCode);
 }
