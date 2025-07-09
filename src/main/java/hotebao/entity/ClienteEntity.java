@@ -2,6 +2,8 @@ package hotebao.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Setter;
 
@@ -49,6 +51,25 @@ public class ClienteEntity {
 
     @OneToOne(mappedBy = "clienteEntity")
     private UsuarioEntity usuario;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user", nullable = false)
+    private Long id;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "login_user", nullable = false)
+    private String loginUser;
+
+    @NotNull
+    @Lob
+    @Column(name = "perfil", nullable = false)
+    private String perfil;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_codigo")
+    private Cliente clienteCodigo;
 
     @Override
     public String toString() {

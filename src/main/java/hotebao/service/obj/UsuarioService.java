@@ -9,7 +9,8 @@ import hotebao.dto.UsuarioDTO;
 import hotebao.exception.OurException;
 import hotebao.repository.UsuarioRepository;
 import hotebao.entity.UsuarioEntity;
-import hotebao.security.JWTUtil;
+import hotebao.security.JWTService;
+import hotebao.security.JWTService;
 import hotebao.service.interf.InterfaceUsuarioService;
 import hotebao.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public abstract class UsuarioService implements InterfaceUsuarioService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JWTUtil jwtUtil;
+    private JWTService jwtService;
 
     private AuthenticationManager authenticationManager;
 
@@ -89,7 +90,7 @@ public abstract class UsuarioService implements InterfaceUsuarioService {
                     .orElseThrow(() -> new OurException("Usuário não encontrado"));
 
             // Generate JWT token
-            String token = jwtUtil.generateToken((UserDetails) usuario);
+            String token = jwtService.generateToken((UserDetails) usuario);
 
             // Map to DTO
             UsuarioDTO userDTO = Utils.mapUsuarioEntityToUsuarioDTO(usuario);
