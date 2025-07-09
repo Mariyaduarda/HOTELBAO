@@ -220,7 +220,7 @@ public class QuartoService implements InterfaceQuartoService {
 
     // buscar quartos disponíveis em um período
     @Override
-    public Response getQuartosDisponiveis(LocalDate dataEntrada, LocalDate dataSaida, QuartoEntity.TipoQuarto tipoQuarto){
+    public Response getQuartosDisponiveis(){
         Response response = new Response();
 
         try {
@@ -243,7 +243,7 @@ public class QuartoService implements InterfaceQuartoService {
 
     // verificar disponibilidade geral (sem datas específicas)
     @Override
-    public Response getDisponibilidadeGeral(long idQuarto){
+    public Response getDisponibilidadeGeral(LocalDate dataEntrada, LocalDate dataSaida, QuartoEntity.TipoQuarto tipoQuarto){
         Response response = new Response();
 
         try {
@@ -260,5 +260,13 @@ public class QuartoService implements InterfaceQuartoService {
             response.setMessage("Erro ao verificar disponibilidade geral: " + e.getMessage()); // Fixed error message
         }
         return response;
+    }
+
+    public Response getQuartosDisponiveis(Long idQuarto) {
+        return null;
+    }
+
+    public List<String> getTipoQuartos() {
+
     }
 }

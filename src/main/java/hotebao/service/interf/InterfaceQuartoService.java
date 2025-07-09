@@ -24,9 +24,8 @@ public interface InterfaceQuartoService {
     Response getDisponibilidadeById(long idQuarto, LocalDate dataEntrada, LocalDate dataSaida);
 
     // buscar quartos disponíveis em um período
-    Response getQuartosDisponiveis(LocalDate dataEntrada, LocalDate dataSaida, QuartoEntity.TipoQuarto tipoQuarto);
+    Response getQuartosDisponiveis();
 
     // verificar disponibilidade geral (sem datas específicas)
-    Response getDisponibilidadeGeral(long idQuarto);
-
+    Response getDisponibilidadeGeral(LocalDate dataEntrada, LocalDate dataSaida, QuartoEntity.TipoQuarto tipoQuarto);
 }

@@ -23,6 +23,9 @@ public class Response {
     private List<QuartoDTO> quartoDTOList;
     private List<EstadiaDTO> estadiaDTOList;
 
+    public static void setStatusCode(int i) {
+    }
+
     public void setEstadiaDTO(EstadiaDTO estadiaDTO) {
     }
 

@@ -15,4 +15,8 @@ public interface InterfaceUsuarioService {
     Response getUsuarioById(Long id);
 
     Response deleteUsuario(Long id);
+
+    Response getMyInfo(String email);
+
+    Response getUsuarioEstadiaHistory(String idUsuario);
 }

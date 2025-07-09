@@ -32,6 +32,14 @@ public class QuartoEntity {
         public String getDescricao() {
             return descricao;
         }
+
+        public boolean isEmpty() {
+            return this == STANDARD;
+        }
+
+        public boolean isBlank() {
+            return this == STANDARD;
+        }
     }
 
     @Id
