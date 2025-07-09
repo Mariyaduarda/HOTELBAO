@@ -21,6 +21,10 @@ public class EstadiaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEstadia;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioEntity usuario;
+
     @NotNull(message = "Cliente é obrigatório!")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
@@ -52,4 +56,5 @@ public class EstadiaEntity {
         this.dataSaida = dataSaida;
         this.valorTotal = valorTotal;
     }
+
 }

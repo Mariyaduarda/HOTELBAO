@@ -21,8 +21,7 @@ public class QuartoEntity {
     public enum TipoQuarto {
         STANDARD("Standard"),
         SUITE("Suíte"),
-        DELUXE("Deluxe"),
-        PRESIDENCIAL("Presidencial");
+        DELUXE("Deluxe");
 
         private final String descricao;
 

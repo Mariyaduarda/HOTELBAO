@@ -3,6 +3,8 @@ package hotebao.repository;
 import hotebao.entity.ClienteEntity;
 import hotebao.entity.EstadiaEntity;
 import hotebao.entity.QuartoEntity;
+import hotebao.entity.UsuarioEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +28,7 @@ public interface EstadiaRepository extends JpaRepository<EstadiaEntity, Long> {
     // busca por data de saida
     List<EstadiaEntity> findByDataSaida(LocalDate dataSaida);
 
+    Optional<UsuarioEntity> findByConfirmationCode(String confirmationCode);
+
+    EstadiaEntity findById(Sort id);
 }

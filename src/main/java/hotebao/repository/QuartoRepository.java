@@ -49,4 +49,8 @@ public interface QuartoRepository extends JpaRepository<QuartoEntity, Long> {
             @Param("dataSaida") LocalDate dataSaida,
             @Param("tipoQuarto") String tipoQuarto);
 
+    @Query("SELECT r FROM QuartoEntity r WHERE r.idquarto NOT IN (SELECT b.quartoCodigo FROM EstadiaEntity b)")
+    List<QuartoEntity> getDisponibilidadeGeral();
+
+    List<QuartoEntity> findByTipoQuarto(QuartoEntity.TipoQuarto quartoTipo);
 }

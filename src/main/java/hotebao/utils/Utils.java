@@ -42,7 +42,8 @@ public class Utils {
     /**
      * mapeia UsuarioEntity para UsuarioDTO
      * metodo factory
-     */    public static UsuarioDTO mapUsuarioEntityToUsuarioDTO(UsuarioEntity usuarioEntity) {
+     */
+    public static UsuarioDTO mapUsuarioEntityToUsuarioDTO(UsuarioEntity usuarioEntity) {
         if (usuarioEntity == null) {
             return null;
         }
@@ -56,7 +57,7 @@ public class Utils {
         usuarioDTO.setCpf(usuarioEntity.getCpf());
         usuarioDTO.setEstadia(new ArrayList<>());
 
-            usuarioDTO.generateSessionToken();
+        usuarioDTO.generateSessionToken();
 
         return usuarioDTO;
     }
@@ -125,7 +126,7 @@ public class Utils {
         estadiaDTO.setValorTotal(estadiaEntity.getValorTotal());
         estadiaDTO.setEstadia(new ArrayList<>());
 
-        // gerar ‘token’ de sessão
+        // gerar 'token' de sessão
         estadiaDTO.generateSessionToken();
 
         return estadiaDTO;
@@ -151,6 +152,42 @@ public class Utils {
     public  static List<ClienteDTO> mapClienteEntityListToClienteDTOList(List<ClienteEntity> clienteEntityList){
         return clienteEntityList.stream().map(u -> mapClienteEntityToClienteDTO(u)).collect(Collectors.toList());
     }
+
+    /**
+     * mapeia QuartoEntity para QuartoDTO incluindo as estadias associadas
+     * usado quando você precisa dos dados do quarto junto com seu histórico de estadias
+     */
+    public static QuartoDTO mapQuartoEntityToQuartoDTOPlusEstadia(QuartoEntity quartoEntity) {
+        if (quartoEntity == null) {
+            return null;
+        }
+
+        // primeiro mapeia os dados básicos do quarto
+        QuartoDTO quartoDTO = new QuartoDTO();
+
+        quartoDTO.setIdQuarto(quartoEntity.getIdquarto());
+        quartoDTO.setNome(quartoEntity.getNome());
+        quartoDTO.setPreco(quartoEntity.getPreco());
+        quartoDTO.setImagem(quartoEntity.getImagem());
+        quartoDTO.setDescricao(quartoEntity.getDescricao());
+
+        // mapeia as estadias associadas ao quarto (se existirem)
+        if (quartoEntity.getEstadias() != null && !quartoEntity.getEstadias().isEmpty()) {
+            List<EstadiaDTO> estadiasDTO = quartoEntity.getEstadias().stream()
+                    .map(estadia -> mapEstadiaEntityToEstadiaDTO(estadia))
+                    .collect(Collectors.toList());
+            quartoDTO.setEstadia(estadiasDTO);
+        } else {
+            quartoDTO.setEstadia(new ArrayList<>());
+        }
+
+        // gerar token de sessão
+        quartoDTO.generateSessionToken();
+
+        return quartoDTO;
+    }
+
+    public static EstadiaDTO mapEstadiaEntityToEstadiaDTOPlusEstadiaQuarto(EstadiaEntity estadia, boolean b) {
+        return null;
+    }
 }
-
-

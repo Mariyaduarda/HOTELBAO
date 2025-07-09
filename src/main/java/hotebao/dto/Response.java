@@ -22,4 +22,10 @@ public class Response {
     private List<UsuarioDTO> usuarioDTOList;
     private List<QuartoDTO> quartoDTOList;
     private List<EstadiaDTO> estadiaDTOList;
+
+    public void setEstadiaDTO(EstadiaDTO estadiaDTO) {
+    }
+
+    public void setEstadiaEntityList(List<EstadiaDTO> estadiaDTO) {
+    }
 }

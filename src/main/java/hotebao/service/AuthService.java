@@ -1,5 +1,6 @@
 package hotebao.service;
 
+import hotebao.dto.Response;
 import hotebao.entity.UsuarioEntity;
 import hotebao.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,5 +14,13 @@ import java.util.Optional;
 public class AuthService {
 
 
+    public Response registro(UsuarioEntity usuario) {
+        return null;
     }
+
+    public Response login(UsuarioEntity loginRequest) {
+
+    return null;
+    }
+}
 

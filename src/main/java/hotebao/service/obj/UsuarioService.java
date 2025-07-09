@@ -2,7 +2,7 @@
 // hotebao.dto.Response with fields: statusCodigo, message, token, role, tempoExpirado, etc.
 
 // Updated Service Class
-package hotebao.service;
+package hotebao.service.obj;
 
 import hotebao.dto.Response;
 import hotebao.dto.UsuarioDTO;
@@ -10,7 +10,7 @@ import hotebao.exception.OurException;
 import hotebao.repository.UsuarioRepository;
 import hotebao.entity.UsuarioEntity;
 import hotebao.security.JWTUtil;
-import hotebao.service.past.InterfaceUsuarioService;
+import hotebao.service.interf.InterfaceUsuarioService;
 import hotebao.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -170,6 +170,30 @@ public class UsuarioService implements InterfaceUsuarioService {
 
             response.setStatusCodigo(200);
             response.setMessage("Usuário deletado com sucesso");
+
+        } catch (OurException e) {
+            response.setStatusCodigo(404);
+            response.setMessage(e.getMessage());
+
+        } catch (Exception e) {
+            response.setStatusCodigo(500);
+            response.setMessage("Erro interno: " + e.getMessage());
+        }
+
+        return response;
+    }
+    public Response getMyInfo(String email) {
+        Response response = new Response();
+
+        try {
+            UsuarioEntity usuario = usuarioRepository.findByEmail(email)
+                    .orElseThrow(() -> new OurException("Usuário não encontrado"));
+
+            UsuarioDTO userDTO = Utils.mapUsuarioEntityToUsuarioDTO(usuario);
+
+            response.setStatusCodigo(200);
+            response.setUsuarioDTO(userDTO);
+            response.setMessage("Informações do usuário recuperadas com sucesso");
 
         } catch (OurException e) {
             response.setStatusCodigo(404);
