@@ -96,7 +96,7 @@ public class Utils {
 
         ClienteDTO clienteDTO = new ClienteDTO();
 
-        clienteDTO.setIdCliente(clienteEntity.getIdCliente());
+        clienteDTO.setIdCliente(clienteEntity.getIdUsuario().getId());
         clienteDTO.setNome(clienteEntity.getNome());
         clienteDTO.setCpf(clienteEntity.getCpf());
         clienteDTO.setTelefone(clienteEntity.getTelefone());

@@ -15,10 +15,6 @@ import java.util.Set;
 @Table (name = "usuario")
 public class ClienteEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idCliente;
-
     @Setter
     @Column(nullable = false)
     private String nome;
@@ -46,16 +42,12 @@ public class ClienteEntity {
     @Column(nullable = false)
     private String senha;
 
-    @OneToMany(mappedBy = "clienteCodigo")
-    private Set<EstadiaEntity> estadias = new LinkedHashSet<>();
-
-    @OneToOne(mappedBy = "clienteEntity")
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private UsuarioEntity usuario;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user", nullable = false)
-    private Long id;
+    @OneToMany(mappedBy = "cliente")
+    private Set<EstadiaEntity> estadias = new LinkedHashSet<>();
 
     @Size(max = 255)
     @NotNull
@@ -67,14 +59,17 @@ public class ClienteEntity {
     @Column(name = "perfil", nullable = false)
     private String perfil;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_codigo")
-    private Cliente clienteCodigo;
+    @JoinColumn(name = "id_user")
+    private Cliente idUsuario;
 
     @Override
     public String toString() {
         return "ClienteEntity{" +
-                "idCliente=" + idCliente +
+                "idCliente=" + idUsuario +
                 ", nome='" + nome + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", email='" + email + '\'' +

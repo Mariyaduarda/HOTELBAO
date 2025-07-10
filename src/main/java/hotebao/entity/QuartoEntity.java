@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "quarto")
 public class QuartoEntity {
 
-    @OneToMany(mappedBy = "quartoCodigo")
+    @OneToMany(mappedBy = "quarto")
     private Set<EstadiaEntity> estadias = new LinkedHashSet<>();
 
     // enum declarado tipo de quartos numa classe

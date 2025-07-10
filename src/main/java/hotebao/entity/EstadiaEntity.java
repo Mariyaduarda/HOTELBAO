@@ -21,11 +21,10 @@ public class EstadiaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEstadia;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private UsuarioEntity usuario;
 
-    @NotNull(message = "Cliente é obrigatório!")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private ClienteEntity cliente;
@@ -47,5 +46,4 @@ public class EstadiaEntity {
     @DecimalMin(value = "0.0", inclusive = false, message = "Valor deve ser maior que zero!")
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valorTotal;
-
 }
