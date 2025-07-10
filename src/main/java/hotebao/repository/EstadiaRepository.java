@@ -3,9 +3,10 @@ package hotebao.repository;
 import hotebao.entity.ClienteEntity;
 import hotebao.entity.EstadiaEntity;
 import hotebao.entity.QuartoEntity;
-import hotebao.entity.UsuarioEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -15,20 +16,25 @@ import java.util.Optional;
 @Repository
 public interface EstadiaRepository extends JpaRepository<EstadiaEntity, Long> {
 
-    Optional<EstadiaEntity> findEstadiaEntityConfirmationCode(String ConfirmationCode);
-    // buscar por quarto - cliente
-    List<EstadiaEntity> findByQuartoEntityRelacionamento(QuartoEntity quartoEntityRelacionamento);
 
-    // buscar por cliente - quarto
-    List<EstadiaEntity> findByClienteEntityRelacionamento(ClienteEntity clienteEntityRelacionamento);
+    @Query("SELECT e FROM EstadiaEntity e WHERE e.confirmationCode = :code")
+    Optional<EstadiaEntity> findEstadiaEntityConfirmationCode(@Param("code") String confirmationCode);
 
-    // buscar por data de entrada
+    // Find by quarto (correct property name)
+    List<EstadiaEntity> findByQuarto(QuartoEntity quarto);
+
+    // Find by cliente (correct property name)
+    List<EstadiaEntity> findByCliente(ClienteEntity cliente);
+
+    // Find by data entrada
     List<EstadiaEntity> findByDataEntrada(LocalDate dataEntrada);
 
-    // busca por data de saida
+    // Find by data saida
     List<EstadiaEntity> findByDataSaida(LocalDate dataSaida);
 
-    Optional<UsuarioEntity> findByConfirmationCode(String confirmationCode);
+    // If you need sorted results
+    List<EstadiaEntity> findByQuarto(QuartoEntity quarto, Sort sort);
+    List<EstadiaEntity> findByCliente(ClienteEntity cliente, Sort sort);
 
-    EstadiaEntity findById(Sort id);
+    Optional<Object> findByConfirmationCode(String confirmationCode);
 }

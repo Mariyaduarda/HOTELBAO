@@ -19,19 +19,23 @@ public class EstadiaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idEstadia;
+    @Column(name = "id_estadia")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
     private UsuarioEntity usuario;
 
+    @Column(name = "confirmation_code", unique = true, length = 50)
+    private String confirmationCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "cliente_id", nullable = false, referencedColumnName = "id_cliente")
     private ClienteEntity cliente;
 
     @NotNull(message = "Quarto é obrigatório!")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quarto_id", nullable = false)
+    @JoinColumn(name = "quarto_id", nullable = false, referencedColumnName = "id_quarto")
     private QuartoEntity quarto;
 
     @NotNull(message = "Data de entrada é obrigatória!")
@@ -44,6 +48,10 @@ public class EstadiaEntity {
 
     @NotNull(message = "Valor total é obrigatório!")
     @DecimalMin(value = "0.0", inclusive = false, message = "Valor deve ser maior que zero!")
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal valorTotal;
+
+    public long getIdEstadia() {
+        return id;
+    }
 }

@@ -50,7 +50,7 @@ public class Utils {
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
 
-        usuarioDTO.setIdUser(usuarioEntity.getIdUsuario());
+        usuarioDTO.setIdUser(usuarioEntity.getId());
         usuarioDTO.setLoginUser(usuarioEntity.getLoginUser());
         usuarioDTO.setEmail(usuarioEntity.getEmail());
         usuarioDTO.setSenha(usuarioEntity.getSenha());
@@ -73,7 +73,7 @@ public class Utils {
 
         QuartoDTO quartoDTO = new QuartoDTO();
 
-        quartoDTO.setIdQuarto(quartoEntity.getIdquarto());
+        quartoDTO.setIdQuarto(quartoEntity.getId());
         quartoDTO.setNome(quartoEntity.getNome());
         quartoDTO.setPreco(quartoEntity.getPreco());
         quartoDTO.setImagem(quartoEntity.getImagem());
@@ -96,7 +96,7 @@ public class Utils {
 
         ClienteDTO clienteDTO = new ClienteDTO();
 
-        clienteDTO.setIdCliente(clienteEntity.getIdUsuario().getId());
+        clienteDTO.setIdCliente(clienteEntity.getId());
         clienteDTO.setNome(clienteEntity.getNome());
         clienteDTO.setCpf(clienteEntity.getCpf());
         clienteDTO.setTelefone(clienteEntity.getTelefone());
@@ -165,7 +165,7 @@ public class Utils {
         // primeiro mapeia os dados básicos do quarto
         QuartoDTO quartoDTO = new QuartoDTO();
 
-        quartoDTO.setIdQuarto(quartoEntity.getIdquarto());
+        quartoDTO.setIdQuarto(quartoEntity.getId());
         quartoDTO.setNome(quartoEntity.getNome());
         quartoDTO.setPreco(quartoEntity.getPreco());
         quartoDTO.setImagem(quartoEntity.getImagem());

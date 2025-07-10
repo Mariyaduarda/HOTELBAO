@@ -21,8 +21,8 @@ public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
-    private long idUsuario;
+    @Column(name = "id")
+    private long id;
 
     @NotBlank (message = "Obrigatório inserir username")
     @Size(min = 5, max = 30, message = "Username deve ter entre 3 a 30 caracteres")

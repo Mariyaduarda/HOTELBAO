@@ -15,6 +15,11 @@ import java.util.Set;
 @Table (name = "usuario")
 public class ClienteEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente") // Nome da coluna no banco de dados
+    private Long id;
+
     @Setter
     @Column(nullable = false)
     private String nome;
@@ -59,17 +64,10 @@ public class ClienteEntity {
     @Column(name = "perfil", nullable = false)
     private String perfil;
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user")
-    private Cliente idUsuario;
-
     @Override
     public String toString() {
         return "ClienteEntity{" +
-                "idCliente=" + idUsuario +
+                "idCliente=" + id +
                 ", nome='" + nome + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", email='" + email + '\'' +

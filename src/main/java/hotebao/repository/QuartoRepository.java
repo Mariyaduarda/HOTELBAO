@@ -10,46 +10,38 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 @Repository
 public interface QuartoRepository extends JpaRepository<QuartoEntity, Long> {
 
-    @Query("SELECT DISTINCT r.TipoQuarto FROM QuartoEntity r")
-    List<String> findDistinctQuartoType();
+    // 1. Buscar tipos distintos de quarto
+    @Query("SELECT DISTINCT q.tipoQuarto FROM QuartoEntity q")
+    List<QuartoEntity.TipoQuarto> findDistinctTiposQuarto();
 
-    @Query("SELECT r FROM QuartoEntity r WHERE r.idquarto NOT IN (SELECT b.quarto FROM EstadiaEntity b)")
-    List<QuartoEntity> findQuartosDisponiveis();
+    // 2. Quartos disponíveis (sem estadias ativas)
+    @Query("SELECT q FROM QuartoEntity q WHERE q.id NOT IN " +
+            "(SELECT e.quarto.id FROM EstadiaEntity e " +
+            "WHERE (:data BETWEEN e.dataEntrada AND e.dataSaida))")
+    List<QuartoEntity> findQuartosDisponiveis(@Param("data") LocalDate data);
 
-    // buscar quartos por nome
-    List<QuartoEntity> findByNome(String nome);
-
-    // buscar quartos que contenham parte do nome - busca flexível)
-    List<QuartoEntity> findByNomeContainingIgnoreCase(String nome);
-
-    // buscar quartos por descrição
-    List<QuartoEntity> findByDescricao(String descricao);
-
-    // buscar quartos que contenham parte da descrição
-    List<QuartoEntity> findByDescricaoContainingIgnoreCase(String descricao);
-
-    // buscar quartos por preço exato
-    List<QuartoEntity> findByPreco(BigDecimal preco);
-
-    // buscar quarto por imagem
-    Optional<QuartoEntity> findByImagem(String imagem);
-
-    @Query("SELECT r FROM QuartoEntity r WHERE " +
-            "r.tipoQuarto = :tipoQuarto AND " +
-            "r.idquarto NOT IN (" +
-            "    SELECT e.quarto FROM EstadiaEntity e " +
-            "    WHERE (e.dataEntrada <= :dataSaida AND e.dataSaida >= :dataEntrada)" +
+    // 3. Quartos disponíveis por tipo e período
+    @Query("SELECT q FROM QuartoEntity q WHERE " +
+            "q.tipoQuarto = :tipo AND " +
+            "NOT EXISTS (" +
+            "    SELECT e FROM EstadiaEntity e " +
+            "    WHERE e.quarto = q AND " +
+            "    (e.dataEntrada < :dataSaida AND e.dataSaida > :dataEntrada)" +
             ")")
-    List<QuartoEntity> findQuartosDisponiveisByDateAndType(
+    List<QuartoEntity> findQuartosDisponiveisPorTipoEPeriodo(
             @Param("dataEntrada") LocalDate dataEntrada,
             @Param("dataSaida") LocalDate dataSaida,
-            @Param("tipoQuarto") String tipoQuarto);
+            @Param("tipo") QuartoEntity.TipoQuarto tipo);
 
-    List<QuartoEntity> findByTipoQuarto(QuartoEntity.TipoQuarto quartoTipo);
+    // Métodos derivados
+    List<QuartoEntity> findByTipoQuarto(QuartoEntity.TipoQuarto tipo);
+    List<QuartoEntity> findByNomeContainingIgnoreCase(String nome);
+    Optional<QuartoEntity> findByImagem(String imagem);
+
+    List<QuartoEntity> findQuartosDisponiveisByDateAndType(LocalDate dataEntrada, LocalDate dataSaida, String s);
 
     List<QuartoEntity> getDisponibilidadeGeral();
 }

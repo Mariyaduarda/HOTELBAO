@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstadiaService implements InterfaceEstadiaService {
@@ -34,8 +35,10 @@ public class EstadiaService implements InterfaceEstadiaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private String confirmationCode;
+
     @Override
-    public Response SalvaEstadia(Long idQuarto, Long idUsuario, EstadiaEntity estadiaRequest){
+    public Response salvarEstadia(Long idQuarto, Long idUsuario, EstadiaEntity estadiaRequest){
         Response response = new Response();
 
         try {
@@ -54,7 +57,7 @@ public class EstadiaService implements InterfaceEstadiaService {
                 throw new OurException("O quarto não está disponivel para a data desejada");
             }
 
-            // Configurar a estadia
+            // onfigurar a estadia
             estadiaRequest.setQuarto(quarto);
             estadiaRequest.setUsuario(usuario);
 
@@ -109,14 +112,62 @@ public class EstadiaService implements InterfaceEstadiaService {
 
     @Override
     public Response findEstadiaByConfirmationCode(String confirmationCode){
+                    Response response = new Response();
+
+            try {
+                EstadiaEntity estadia = (EstadiaEntity) estadiaRepository.findByConfirmationCode(confirmationCode)
+                        .orElseThrow(() -> new OurException("Estadia não encontrada com este código de confirmação"));
+
+                EstadiaDTO estadiaDTO = Utils.mapEstadiaEntityToEstadiaDTOPlusEstadiaQuarto(estadia, true);
+
+                response.setMessage("Estadia encontrada com sucesso");
+                response.setStatusCodigo(200);
+                response.setEstadiaDTO(estadiaDTO);
+
+            } catch (OurException e) {
+                response.setStatusCodigo(404);
+                response.setMessage(e.getMessage());
+            } catch (Exception e) {
+                response.setStatusCodigo(500);
+                response.setMessage("Erro ao buscar estadia: " + e.getMessage());
+            }
+
+            return response;
+        }
+
+        @Override
+        public Response listarTodasEstadias() {
+            Response response = new Response();
+
+            try {
+                List<EstadiaEntity> estadiaList = estadiaRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+                List<EstadiaDTO> estadiaDTOList = Utils.mapEstadiaEntityListToEstadiaDTOList(estadiaList);
+
+                response.setMessage("Estadias listadas com sucesso");
+                response.setStatusCodigo(200);
+                response.setEstadiaEntityList(estadiaDTOList);
+
+            } catch (Exception e) {
+                response.setStatusCodigo(500);
+                response.setMessage("Erro ao listar estadias: " + e.getMessage());
+            }
+
+            return response;
+        }
+
+    @Override
+    public Response buscarEstadiaPorId(Long idEstadia) {
         Response response = new Response();
 
         try {
-            EstadiaEntity estadia = estadiaRepository.findEstadiaEntityConfirmationCode(confirmationCode)
-                    .orElseThrow(() -> new OurException("Estadia não encontrada com este código de confirmação"));
+            // busca a estadia no repositório
+            EstadiaEntity estadia = estadiaRepository.findById(idEstadia)
+                    .orElseThrow(() -> new OurException("Estadia não encontrada com ID: " + idEstadia));
 
+            // converte para DTO
             EstadiaDTO estadiaDTO = Utils.mapEstadiaEntityToEstadiaDTOPlusEstadiaQuarto(estadia, true);
 
+            // configura a resposta
             response.setMessage("Estadia encontrada com sucesso");
             response.setStatusCodigo(200);
             response.setEstadiaDTO(estadiaDTO);
@@ -126,7 +177,7 @@ public class EstadiaService implements InterfaceEstadiaService {
             response.setMessage(e.getMessage());
         } catch (Exception e) {
             response.setStatusCodigo(500);
-            response.setMessage("Erro tentando adicionar a estadia de confirmação: " + e.getMessage());
+            response.setMessage("Erro ao buscar estadia: " + e.getMessage());
         }
 
         return response;
@@ -206,7 +257,7 @@ public class EstadiaService implements InterfaceEstadiaService {
         Response response = new Response();
 
         try {
-            EstadiaEntity estadia = estadiaRepository.findEstadiaEntityConfirmationCode(confirmationCode)
+            EstadiaEntity estadia = (EstadiaEntity) estadiaRepository.findEstadiaEntityConfirmationCode(confirmationCode)
                     .orElseThrow(() -> new OurException("Estadia não encontrada com este código de confirmação"));
 
             EstadiaDTO estadiaDTO = Utils.mapEstadiaEntityToEstadiaDTOPlusEstadiaQuarto(estadia, true);
@@ -245,7 +296,7 @@ public class EstadiaService implements InterfaceEstadiaService {
             response.setMessage(e.getMessage());
         } catch (Exception e) {
             response.setStatusCodigo(500);
-            response.setMessage("Erro ao buscar estadia por ID: " + e.getMessage());
+            response.setMessage("Erro ao buscar estadia: " + e.getMessage());
         }
 
         return response;

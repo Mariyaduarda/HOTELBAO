@@ -44,7 +44,8 @@ public class QuartoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idquarto;
+    @Column(name = "id_quarto")  // Make sure this matches your @JoinColumn reference
+    private Long id;
 
     @Column(nullable = false)
     private String nome;
@@ -67,7 +68,7 @@ public class QuartoEntity {
     public QuartoEntity() {}
 
     public QuartoEntity(Long idquarto, String nome, String descricao, BigDecimal preco, String imagem, TipoQuarto tipoQuarto) {
-        this.idquarto = idquarto;
+        this.id = idquarto;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;

@@ -5,17 +5,21 @@ import hotebao.entity.EstadiaEntity;
 
 public interface InterfaceEstadiaService {
 
-    Response SalvaEstadia(Long idEstadia, Long idUsuario, EstadiaEntity estadiaRequest);
+    Response salvarEstadia(Long idQuarto, Long idUsuario, EstadiaEntity estadiaRequest);
 
     Response findEstadiaByConfirmationCode(String confirmationCode);
+
+    Response listarTodasEstadias();
+
+    Response buscarEstadiaPorId(Long idEstadia);
 
     Response getEstadia();
 
     Response cancelarEstadia(Long idEstadia);
 
-    Response getAllEstadia(Long idEstadia);
-
     Response getAllEstadias();
 
     Response getEstadiaByConfirmationCode(String confirmationCode);
+
+    Response getAllEstadia(Long id);
 }

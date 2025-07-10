@@ -1,20 +1,31 @@
 package hotebao.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import hotebao.entity.UsuarioEntity;
+import hotebao.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/test")
 public class TestController {
 
-    @GetMapping
-    public String test() {
-        return "🚀 Aplicação funcionando! H2 Console disponível em: http://localhost:8080/h2-console";
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @GetMapping("/usuarios")
+    public List<UsuarioEntity> getAllUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    @PostMapping("/usuarios")
+    public UsuarioEntity createUsuario(@RequestBody UsuarioEntity usuario) {
+        return usuarioRepository.save(usuario);
     }
 
     @GetMapping("/health")
     public String health() {
-        return "✅ OK - Aplicação rodando na porta 8080";
+        return "Application is running!";
     }
 }

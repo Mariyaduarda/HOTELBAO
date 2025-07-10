@@ -22,14 +22,14 @@ public class EstadiaController {
             @PathVariable Long idUsuario,
             @RequestBody EstadiaEntity estadiaRequest
     ) {
-        Response response = interfaceEstadiaService.SalvaEstadia(idQuarto, idUsuario, estadiaRequest);
+        Response response = interfaceEstadiaService.salvarEstadia(idQuarto, idUsuario, estadiaRequest);
         return ResponseEntity.status(response.getStatusCodigo()).body(response);
     }
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyAuthority('ADMIN_ROLE')")
-    public ResponseEntity<Response> getAllEstadias() {
-        Response response = interfaceEstadiaService.getAllEstadias();
+    public ResponseEntity<Response> getEstadia() {
+        Response response = interfaceEstadiaService.getEstadia();
         return ResponseEntity.status(response.getStatusCodigo()).body(response);
     }
 
